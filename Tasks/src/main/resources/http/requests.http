@@ -1,0 +1,37 @@
+### Получение списка задач
+
+GET localhost/tasks?page=2
+
+### Поиск задачи по Id
+
+GET localhost/tasks/10
+
+### Добавление задачи
+
+POST localhost/tasks
+Content-Type: application/json
+
+{
+  "name": "name - 5",
+  "description": "description - 5",
+  "status": "ok"
+}
+
+### изменение статуса задачи
+
+PUT localhost/tasks/4
+Content-Type: application/json
+
+{
+  "status": "upd"
+}
+
+### Назначение исполнителя задачи
+
+PUT localhost/tasks/4
+Content-Type: application/json
+
+{
+  "accountId": "1"
+}
+
