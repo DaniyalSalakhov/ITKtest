@@ -58,13 +58,6 @@ public class TasksServiceImpl implements TasksService {
                         .title("New task created")
                         .build());
         return task;
-        /*Task task = new Task();
-        task.setName(newTask.getName());
-        task.setDescription(newTask.getDescription());
-        task.setStatus(newTask.getStatus());
-        task.setAccount(null);
-        return from(tasksRepository.save(task));*/
-
     }
 
     @Override
