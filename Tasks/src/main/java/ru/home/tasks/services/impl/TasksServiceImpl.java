@@ -6,12 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.tasks.dto.TaskDto;
+import ru.home.tasks.dto.TaskUpdEventDto;
 import ru.home.tasks.dto.TasksPage;
 import ru.home.tasks.exceptions.TaskNotFoundException;
 import ru.home.tasks.models.Account;
 import ru.home.tasks.models.Task;
 import ru.home.tasks.repositories.AccountsRepository;
 import ru.home.tasks.repositories.TasksRepository;
+import ru.home.tasks.services.TaskUpdEventProducer;
 import ru.home.tasks.services.TasksService;
 
 
@@ -23,6 +25,7 @@ public class TasksServiceImpl implements TasksService {
 
     private final TasksRepository tasksRepository;
     private final AccountsRepository accountsRepository;
+    private final TaskUpdEventProducer taskUpdEventProducer;
 
     @Value("${default-page-size}")
     private int defaultPageSize;
@@ -43,13 +46,25 @@ public class TasksServiceImpl implements TasksService {
     }
 
     @Override
-    public TaskDto createTask(TaskDto task) {
-        return from(tasksRepository.save(
+    public TaskDto createTask(TaskDto newTask) {
+        TaskDto task = from(tasksRepository.save(
                 Task.builder()
-                    .name(task.getName())
-                    .description(task.getDescription())
-                    .status(task.getStatus())
-                    .build()));
+                        .name(newTask.getName())
+                        .description(newTask.getDescription())
+                        .status(newTask.getStatus())
+                        .build()));
+        taskUpdEventProducer.sendTaskUpdEvent(TaskUpdEventDto.builder()
+                        .id(task.getId())
+                        .title("New task created")
+                        .build());
+        return task;
+        /*Task task = new Task();
+        task.setName(newTask.getName());
+        task.setDescription(newTask.getDescription());
+        task.setStatus(newTask.getStatus());
+        task.setAccount(null);
+        return from(tasksRepository.save(task));*/
+
     }
 
     @Override
@@ -60,6 +75,10 @@ public class TasksServiceImpl implements TasksService {
         } else if (newData.getAccountId() != null) {
             Account account = accountsRepository.findById(newData.getAccountId()).orElse(null);
             task.setAccount(account);
+            taskUpdEventProducer.sendTaskUpdEvent(TaskUpdEventDto.builder()
+                            .id(taskId)
+                            .title("New user upd")
+                            .build());
         }
         return from(tasksRepository.save(task));
     }

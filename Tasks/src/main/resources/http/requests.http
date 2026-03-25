@@ -4,7 +4,7 @@ GET localhost/tasks?page=2
 
 ### Поиск задачи по Id
 
-GET localhost/tasks/10
+GET localhost/tasks/7
 
 ### Добавление задачи
 
@@ -12,18 +12,18 @@ POST localhost/tasks
 Content-Type: application/json
 
 {
-  "name": "name - 5",
-  "description": "description - 5",
-  "status": "ok"
+  "name": "name - 11",
+  "description": "description - 11",
+  "status": "created"
 }
 
 ### изменение статуса задачи
 
-PUT localhost/tasks/4
+PUT localhost/tasks/1
 Content-Type: application/json
 
 {
-  "status": "upd"
+  "status": "ok"
 }
 
 ### Назначение исполнителя задачи
@@ -32,6 +32,6 @@ PUT localhost/tasks/4
 Content-Type: application/json
 
 {
-  "accountId": "1"
+  "accountId": 1
 }
 
