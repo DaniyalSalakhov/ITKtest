@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.home.tasks.models.Account;
 import ru.home.tasks.models.Task;
 
 import java.util.List;
@@ -31,13 +30,6 @@ public class TaskDto {
             dto.setAccountId(task.getAccount().getId());
         }
         return dto;
-        /*return TaskDto.builder()
-                .id(task.getId())
-                .name(task.getName())
-                .description(task.getDescription())
-                .status(task.getStatus())
-                .accountId(task.getAccount().getId())
-                .build();*/
     }
 
     public static List<TaskDto> from(List<Task> tasks) {
